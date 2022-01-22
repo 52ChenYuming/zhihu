@@ -20,7 +20,6 @@ setup只执行一次
 
 
 # 侦测变化watch
-
 watch((xxxxx,newValue,oldValue) =>{
 监控数据中的数据要用箭头函数,如 data.count要写成()=>data.count
 })
