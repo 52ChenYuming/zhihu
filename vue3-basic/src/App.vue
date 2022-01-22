@@ -1,19 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <img alt="Vue logo" src="./assets/logo.png" />
   <h1>{{ count }}</h1>
   <h1>{{ double }}</h1>
   <button @click="increase">+1</button>
+  <h1>x:{{ x }},y:{{ y }}</h1>
 </template>
 
 <script lang="ts">
-import { ref, computed, reactive, toRefs, onMounted, onUpdated, onRenderTracked} from 'vue';
-interface DataProps{
+import {
+  ref,
+  computed,
+  reactive,
+  toRefs,
+  onMounted,
+  onUpdated,
+  onRenderTracked,
+  onUnmounted,
+} from "vue";
+import useMousePosition from "./hooks/useMousePosition";
+interface DataProps {
   count: number;
   double: number;
-  increase:() => void;
+  increase: () => void;
 }
 
-export default ({
+export default {
   name: "App",
   setup() {
     // const count  = ref(0)
@@ -23,28 +34,32 @@ export default ({
     // const increase = () => {
     //   count.value++
     // }
-    onMounted(() =>{
-      console.log('mounted');
-      
-    })
+
     onUpdated(() => {
-      console.log('updated');
-      
-    })
-    onRenderTracked((event) =>{
-      console.log(event); 
-    })
-    const data:DataProps = reactive({
-      count:0,
-      increase:() => { data.count++ },
-      double:computed(() => data.count * 2)
-    })
-    const refData = toRefs(data)
+      console.log("updated");
+    });
+    onRenderTracked((event) => {
+      console.log(event);
+    });
+
+    const {x,y} = useMousePosition()
+
+    const data: DataProps = reactive({
+      count: 0,
+      increase: () => {
+        data.count++;
+      },
+      double: computed(() => data.count * 2),
+    });
+
+    const refData = toRefs(data);
     return {
-      ...refData
-    }
-  }
-});
+      ...refData,
+      x,
+      y,
+    };
+  },
+};
 </script>
 
 <style>

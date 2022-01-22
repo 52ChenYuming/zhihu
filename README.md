@@ -15,3 +15,12 @@ toRefs 函数：
 Vue2使用Object. defineProperty()实现响应式原理，而vue3使用Proxy()实现
 
 # 生命周期函数的变化
+beforeCreated 和 created => setup
+setup只执行一次
+
+
+# 侦测变化watch
+
+watch((xxxxx,newValue,oldValue) =>{
+监控数据中的数据要用箭头函数,如 data.count要写成()=>data.count
+})
