@@ -3,22 +3,25 @@
     <input type="text"
       class="form-control"
       :class="{'is-invalid': inputRef.error}"
-      :value="inputRef.val"
       @blur="validateInput"
-      @input="updateValue"
       v-bind="$attrs"
+      v-model="inputVal"
     >
-    <span v-if="inputRef.error" class="invalid-feedback">{{inputRef.message}}</span>
+    <span v-if="inputRef.error" class="invalid-feedback position-absolute mt-1">
+      {{inputRef.message}}
+    </span>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, PropType } from 'vue'
+import { defineComponent, reactive, PropType, computed } from 'vue'
 
 const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 interface RuleProp {
-  type: 'required' | 'email';
-  message: string;
+  type: 'required' | 'email' | 'range' ;
+  message?: string;
+  min?: {message: string, length: number};
+  max?: {message: string, length: number};
 }
 export type RulesProp = RuleProp[]
 export default defineComponent({
@@ -26,31 +29,46 @@ export default defineComponent({
     rules: Array as PropType<RulesProp>,
     modelValue: String
   },
+  inheritAttrs: false,
   setup (props, context) {
-    console.log(context.attrs)
+    const inputVal = computed({
+      get: () => props.modelValue || '',
+      set: val => {
+        context.emit('update:modelValue', val)
+      }
+    })
     const inputRef = reactive({
-      val: props.modelValue || '',
       error: false,
       message: ''
     })
-    const updateValue = (e: KeyboardEvent) => {
-      const targetValue = (e.target as HTMLInputElement).value
-      inputRef.val = targetValue
-      context.emit('update:modelValue', targetValue)
-      console.log(inputRef.val)
-    }
+    // const clearInput = () => {
+    //   inputVal.value = ''
+    // }
     const validateInput = () => {
       if (props.rules) {
         const allPassed = props.rules.every(rule => {
           let passed = true
-          inputRef.message = rule.message
+          inputRef.message = rule.message || ''
+          const { value } = inputVal
           switch (rule.type) {
             case 'required':
-              passed = (inputRef.val.trim() !== '')
+              passed = (value.trim() !== '')
               break
             case 'email':
-              passed = emailReg.test(inputRef.val)
+              passed = emailReg.test(value)
               break
+            case 'range': {
+              const { min, max } = rule
+              if (min && value.trim().length < min.length) {
+                passed = false
+                inputRef.message = min.message
+              }
+              if (max && value.trim().length > max.length) {
+                passed = false
+                inputRef.message = max.message
+              }
+              break
+            }
             default:
               break
           }
@@ -62,7 +80,7 @@ export default defineComponent({
     return {
       inputRef,
       validateInput,
-      updateValue
+      inputVal
     }
   }
 })

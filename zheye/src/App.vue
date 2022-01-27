@@ -16,6 +16,8 @@
         <validate-input
           type="password"
           placeholder="请输入密码"
+          :rules="passwordRules"
+          v-model="passwordVal"
         />
       </div>
       <template #submit>
@@ -69,10 +71,17 @@ export default defineComponent({
   components: { GlobalHeader, ValidateInput, ValidateForm },
   setup () {
     const emailVal = ref('')
+    const passwordVal = ref('')
     const emailRules: RulesProp = [
       { type: 'required', message: '电子邮箱地址不能为空' },
       { type: 'email', message: '请输入正确的电子邮箱格式' }
     ]
+    const passwordRules: RulesProp = [
+      { type: 'required', message: '密码不能为空' },
+      { type: 'range', min: { message: '你的密码至少包括六位，不能含有空格', length: 6 } },
+      { type: 'range', max: { message: '你的密码不能超过十二位，不能含有空格', length: 12 } }
+    ]
+
     const emailRef = reactive({
       val: '',
       error: false,
@@ -97,7 +106,9 @@ export default defineComponent({
       validEmail,
       emailRules,
       emailVal,
-      onFormSubmit
+      onFormSubmit,
+      passwordRules,
+      passwordVal
     }
   }
 })
