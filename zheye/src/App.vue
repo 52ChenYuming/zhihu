@@ -9,6 +9,7 @@
           v-model="emailVal"
           placeholder="请输入您的电子邮箱"
           type="type"
+          ref="inputRef"
         />
       </div>
       <div class="mb-3">
@@ -70,6 +71,7 @@ export default defineComponent({
   name: 'App',
   components: { GlobalHeader, ValidateInput, ValidateForm },
   setup () {
+    const inputRef = ref<any>()
     const emailVal = ref('')
     const passwordVal = ref('')
     const emailRules: RulesProp = [
@@ -97,7 +99,7 @@ export default defineComponent({
       }
     }
     const onFormSubmit = (result: boolean) => {
-      console.log('1234', result)
+      console.log('result', result)
     }
     return {
       list: testData,
@@ -108,7 +110,8 @@ export default defineComponent({
       emailVal,
       onFormSubmit,
       passwordRules,
-      passwordVal
+      passwordVal,
+      inputRef
     }
   }
 })
