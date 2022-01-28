@@ -71,7 +71,7 @@ export default defineComponent({
   name: 'App',
   components: { GlobalHeader, ValidateInput, ValidateForm },
   setup () {
-    const inputRef = ref<any>()
+    const inputRef = ref<unknown>()
     const emailVal = ref('')
     const passwordVal = ref('')
     const emailRules: RulesProp = [
