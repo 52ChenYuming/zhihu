@@ -20,8 +20,6 @@
 import { defineComponent } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
-import Home from './views/Home.vue'
-import Login from './views/Login.vue'
 const currentUser: UserProps = {
   isLogin: false,
   name: 'viking'
