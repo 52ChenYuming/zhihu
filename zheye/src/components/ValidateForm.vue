@@ -22,7 +22,7 @@ type Events = {
 export const emitter = mitt<Events>()
 export default defineComponent({
   emits: ['form-submit'],
-  setup (props, context) {
+  setup(props, context) {
     let funcArr: ValidateFunc[] = []
     const submitForm = () => {
       // 循环执行数组 得到最后的验证结果

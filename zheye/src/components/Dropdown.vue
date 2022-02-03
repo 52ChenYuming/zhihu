@@ -20,7 +20,7 @@ export default defineComponent({
       require: true
     }
   },
-  setup () {
+  setup() {
     const isOpen = ref(false)
     const dropdownRef = ref<null | HTMLElement>(null)
     const toggleOpen = () => {

@@ -30,7 +30,7 @@ export default defineComponent({
     modelValue: String
   },
   inheritAttrs: false,
-  setup (props, context) {
+  setup(props, context) {
     const inputVal = computed({
       get: () => props.modelValue || '',
       set: val => {
