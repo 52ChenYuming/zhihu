@@ -1,24 +1,27 @@
 <template>
-  <div class="login-page">
+  <div class="create-post-page">
+    <h4>新建文章</h4>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
-        <label class="form-label">邮箱地址</label>
+        <label class="form-label">文章标题：</label>
         <validate-input
-          :rules="emailRules" v-model="emailVal"
-          placeholder="请输入邮箱地址"
+          :rules="titleRules" v-model="titleVal"
+          placeholder="请输入文章标题"
           type="text"
-          ref="inputRef"
         />
       </div>
       <div class="mb-3">
-        <label class="form-label">密码</label>
+        <label class="form-label">文章详情：</label>
         <validate-input
           type="password"
-          placeholder="请输入密码"
-          :rules="passwordRules"
-          v-model="passwordVal"
+          placeholder="请输入文章详情"
+          :rules="contentRules"
+          v-model="contentVal"
         />
       </div>
+      <template #submit>
+        <button class="btn btn-primary btn-large">创建</button>
+      </template>
     </validate-form>
   </div>
 </template>
@@ -37,29 +40,27 @@ export default defineComponent({
     ValidateForm
   },
   setup() {
-    const store = useStore()
-    const emailVal = ref('')
+    const titleVal = ref('')
     const router = useRouter()
-    const emailRules: RulesProp = [
-      { type: 'required', message: '电子邮箱地址不能为空' },
-      { type: 'email', message: '请输入正确的电子邮箱格式' }
+    const store = useStore()
+    const titleRules: RulesProp = [
+      { type: 'required', message: '文章标题不能为空' }
     ]
-    const passwordVal = ref('')
-    const passwordRules: RulesProp = [
-      { type: 'required', message: '密码不能为空' }
+    const contentVal = ref('')
+    const contentRules: RulesProp = [
+      { type: 'required', message: '文章详情不能为空' }
     ]
     const onFormSubmit = (result: boolean) => {
-      console.log('result', result)
       if (result) {
         router.push('/')
         store.commit('login')
       }
     }
     return {
-      emailRules,
-      emailVal,
-      passwordVal,
-      passwordRules,
+      titleRules,
+      titleVal,
+      contentVal,
+      contentRules,
       onFormSubmit
     }
   }
