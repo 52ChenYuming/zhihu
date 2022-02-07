@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
-function useURLLoader<T>(url:string){
+function useURLLoader<T>(url: string) {
   const result = ref<T | null>(null)
   const loading = ref(true)
   const loaded = ref(false)
@@ -12,7 +12,7 @@ function useURLLoader<T>(url:string){
     loaded.value = true
     result.value = rawData.data
   }).catch(e => {
-    error.value =e
+    error.value = e
     loading.value = false
   })
 
