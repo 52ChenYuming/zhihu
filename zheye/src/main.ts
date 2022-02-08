@@ -19,9 +19,23 @@ axios.interceptors.request.use(config => {
   }
   return config
 })
+
+axios.interceptors.request.use(config => {
+  store.commit('setLoading', true)
+  return config
+})
+
+axios.interceptors.response.use(config => {
+  setTimeout(() => {
+    store.commit('setLoading', false)
+  }, 200)
+  return config
+})
+
 axios.get('/columns').then(res => {
   console.log(res.data)
 })
+
 const app = createApp(App)
 app.use(router)
 app.use(store)
