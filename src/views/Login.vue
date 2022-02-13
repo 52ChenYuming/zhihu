@@ -22,14 +22,14 @@
     </validate-form>
   </div>
 </template>
-// add
+
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import ValidateInput, { RulesProp } from '../components/ValidateInput.vue'
 import ValidateForm from '../components/ValidateForm.vue'
-
+import createMessage from '../components/ceateMessage'
 export default defineComponent({
   name: 'Login',
   components: {
@@ -56,8 +56,10 @@ export default defineComponent({
           password: passwordVal.value
         }
         store.dispatch('loginAndFetch', payload).then(data => {
-          console.log(data)
-          router.push('/')
+          createMessage('登录成功 2秒后跳转首页', 'success')
+          setTimeout(() => {
+            router.push('/')
+          }, 2000)
         }).catch(e => {
           console.log(e)
         })

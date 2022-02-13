@@ -22,26 +22,21 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.request.use(config => {
   store.commit('setLoading', true)
+  store.commit('setError', { status: false, message: '' })
   return config
 })
 
 axios.interceptors.response.use(config => {
   setTimeout(() => {
     store.commit('setLoading', false)
-  }, 200)
+  }, 1000)
   return config
 }, e => {
-  console.log(e.response)
   const { error } = e.response.data
   store.commit('setError', { status: true, message: error })
   store.commit('setLoading', false)
   return Promise.reject(e.response.data)
 })
-
-axios.get('/columns').then(res => {
-  console.log(res.data)
-})
-
 const app = createApp(App)
 app.use(router)
 app.use(store)
