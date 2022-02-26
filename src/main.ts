@@ -29,7 +29,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(config => {
   setTimeout(() => {
     store.commit('setLoading', false)
-  }, 1000)
+  }, 500)
   return config
 }, e => {
   const { error } = e.response.data

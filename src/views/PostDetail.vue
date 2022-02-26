@@ -1,5 +1,13 @@
 <template>
   <div class="post-detail-page">
+    <modal
+      title="删除文章"
+      :visible="modalIsVisible"
+      @modal-on-close="modalIsVisible = false"
+      @modal-on-confirm="modalIsVisible = false"
+    >
+      <p>确定要删除这篇文章吗？</p>
+    </modal>
     <article class="w-75 mx-auto mb-5 pb-3" v-if="currentPost">
       <img
         :src="currentImageUrl"
@@ -17,26 +25,39 @@
         <span class="text-muted col text-right font-italic">发表于：{{ currentPost.createdAt }}</span>
       </div>
       <div v-html="currentHTML"></div>
+      <div v-if="showEditArea" class="btn-group mt-5">
+        <router-link
+          type="button"
+          class="btn btn-success"
+          :to="{ name: 'create', query: { id: currentPost._id } }"
+        >编辑</router-link>
+        <button type="button" class="btn btn-danger" @click.prevent="modalIsVisible = true">删除</button>
+      </div>
     </article>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed } from 'vue'
+import { defineComponent, onMounted, computed, ref } from 'vue'
 import MarkdownIt from 'markdown-it'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { GlobalDataProps, PostProps, ImageProps } from '../store'
+import { GlobalDataProps, PostProps, ImageProps, UserProps, ResponseType } from '../store'
 import UserProfile from '../components/UserProfile.vue'
+import Modal from '../components/Modal.vue'
+import createMessage from '@/components/createMessage'
+import router from '@/router'
 
 export default defineComponent({
   name: 'post-detail',
   components: {
-    UserProfile
+    UserProfile,
+    Modal
   },
   setup() {
     const store = useStore<GlobalDataProps>()
     const route = useRoute()
+    const modalIsVisible = ref(false)
     const currentId = route.params.id
     const md = new MarkdownIt()
     onMounted(() => {
@@ -47,7 +68,16 @@ export default defineComponent({
       if (currentPost.value && currentPost.value.content) {
         return md.render(currentPost.value.content)
       } else {
-        return '暂无内容'
+        return ''
+      }
+    })
+    const showEditArea = computed(() => {
+      const { isLogin, _id } = store.state.user
+      if (currentPost.value && currentPost.value.author && isLogin) {
+        const postAuthor = currentPost.value.author as UserProps
+        return postAuthor._id === _id
+      } else {
+        return false
       }
     })
     const currentImageUrl = computed(() => {
@@ -58,10 +88,21 @@ export default defineComponent({
         return null
       }
     })
+    const hideAndDelete = () => {
+      modalIsVisible.value = false
+      store.dispatch('deletePost', currentId).then((rawData :ResponseType<PostProps>) => {
+        createMessage('删除成功， 2s后跳转到专栏首页', 'success', 2000)
+        setTimeout(() => {
+          router.push({ name: 'column', params: { id: rawData.data.column } })
+        }, 2000)
+      })
+    }
     return {
       currentPost,
       currentImageUrl,
-      currentHTML
+      currentHTML,
+      showEditArea,
+      modalIsVisible
     }
   }
 })
