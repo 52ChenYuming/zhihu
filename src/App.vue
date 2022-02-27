@@ -6,11 +6,11 @@
     <footer class="text-center py-4 text-secondary bg-light mt-6">
       <small>
         <ul class="list-inline mb-0">
-          <li class="list-inline-item">© 2020 者也专栏</li>
-          <li class="list-inline-item">课程</li>
-          <li class="list-inline-item">文档</li>
-          <li class="list-inline-item">联系</li>
-          <li class="list-inline-item">更多</li>
+          <li class="list-inline-item">© 2022 陈煜明</li>
+          <li class="list-inline-item">江西财经大学</li>
+          <li class="list-inline-item">软件工程</li>
+          <li class="list-inline-item">184班</li>
+          <li class="list-inline-item">1259496020@qq.com</li>
         </ul>
       </small>
     </footer>
