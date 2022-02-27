@@ -83,6 +83,9 @@ const store = createStore<GlobalDataProps>({
     fetchPost(state, rawData) {
       state.posts = [rawData.data]
     },
+    deletePost(state, { data }) {
+      state.posts = state.posts.filter(post => post._id !== data._id)
+    },
     updatePost(state, { data }) {
       state.posts = state.posts.map(post => {
         if (post._id === data._id) {

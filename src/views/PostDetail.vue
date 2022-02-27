@@ -4,7 +4,7 @@
       title="删除文章"
       :visible="modalIsVisible"
       @modal-on-close="modalIsVisible = false"
-      @modal-on-confirm="modalIsVisible = false"
+      @modal-on-confirm="hideAndDelete"
     >
       <p>确定要删除这篇文章吗？</p>
     </modal>
@@ -41,12 +41,11 @@
 import { defineComponent, onMounted, computed, ref } from 'vue'
 import MarkdownIt from 'markdown-it'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { GlobalDataProps, PostProps, ImageProps, UserProps, ResponseType } from '../store'
 import UserProfile from '../components/UserProfile.vue'
 import Modal from '../components/Modal.vue'
 import createMessage from '@/components/createMessage'
-import router from '@/router'
 
 export default defineComponent({
   name: 'post-detail',
@@ -57,6 +56,7 @@ export default defineComponent({
   setup() {
     const store = useStore<GlobalDataProps>()
     const route = useRoute()
+    const router = useRouter()
     const modalIsVisible = ref(false)
     const currentId = route.params.id
     const md = new MarkdownIt()
@@ -102,7 +102,8 @@ export default defineComponent({
       currentImageUrl,
       currentHTML,
       showEditArea,
-      modalIsVisible
+      modalIsVisible,
+      hideAndDelete
     }
   }
 })
