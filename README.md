@@ -1,5 +1,11 @@
 # zhihu
- 基于TypeScript+Vue3 的企业级仿知乎专栏项目
+本项目为基于TypeScript+Vue3的文章专栏项目
+使用Vue-cli搭建，Vuex进行状态管理，Vue-Router设置路由
+
+# 项目运行说明
+参考中不包含node_modules文件，运行前请先使用 ` npm i` 安装相关依赖
+
+安装好依赖后在终端中使用 `npm run serve`运行
 
 # ref 和 reactive
 reactive 函数：
