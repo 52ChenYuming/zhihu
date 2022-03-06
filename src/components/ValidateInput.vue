@@ -53,8 +53,10 @@ export default defineComponent({
       error: false,
       message: ''
     })
+    // 判断输入框内容是否合法
     const validateInput = () => {
       if (props.rules) {
+        // every方法判断数组中的每个元素是否能通过指定函数的测试
         const allPassed = props.rules.every(rule => {
           let passed = true
           inputRef.message = rule.message
