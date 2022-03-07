@@ -46,6 +46,7 @@ const router = createRouter({
     }
   ]
 })
+// 设置导航守卫
 router.beforeEach((to, from, next) => {
   const { user, token } = store.state
   const { requiredLogin, redirectAlreadyLogin } = to.meta
